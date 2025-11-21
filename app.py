@@ -65,27 +65,26 @@ BASE = "FORMULAQSOLUTIONS"
 def generate_design(n):
     s = "FORMULAQSOLUTIONS"
     slen = len(s)
-    mid = n // 2
+    mid = (n - 1) // 2
     lines = []
-    for row in range(n):
-        skip = abs(mid - row)
-        width = n - 2 * skip
-        if width <= slen:
-            start = (slen - width) // 2
-            part = s[start:start+width]
+    for i in range(n):
+        if i <= mid:
+            idx = i
+            start = idx
         else:
-            reps = (width // slen) + 2
-            long_s = s * reps
-            start = (len(long_s) - width) // 2
-            part = long_s[start:start+width]
-        if row % 2 == 0:
-            line = part
+            idx = n - 1 - i
+            start = i
+        count = 1 + 2 * idx
+        block = [s[(start + k) % slen] for k in range(count)]
+        if idx % 2 == 0:
+            line = ''.join(block)
         else:
-            if width > 2:
-                line = part[0] + '-' * (width - 2) + part[-1]
+            if count > 2:
+                line = block[0] + '-' * (count - 2) + block[-1]
             else:
-                line = part
-        lines.append(line.center(n))
+                line = ''.join(block)
+        pad = ' ' * (mid - idx)
+        lines.append(pad + line)
     return lines
 
 HTML = """
